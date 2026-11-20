@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ff5b8a">
+  <title>Open Chamet</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f5f7ff, #e8edff);
+    }
+    .card {
+      width: 100%; max-width: 420px; padding: 36px 26px;
+      text-align: center; background: #fff; border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.08);
+    }
+    .logo {
+      width: 76px; height: 76px; margin: 0 auto 20px;
+      display: grid; place-items: center; border-radius: 20px;
+      background: #ff5b8a; color: white; font-size: 34px; font-weight: 700;
+    }
+    h1 { margin: 0 0 12px; color: #222; font-size: 25px; }
+    p { color: #777; font-size: 15px; line-height: 1.6; }
+    button, .download {
+      display: block; width: 100%; padding: 16px; margin-top: 18px;
+      border-radius: 14px; font-size: 16px; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+    }
+    button { border: 0; background: #ff5b8a; color: white; }
+    .download { border: 1px solid #ddd; color: #444; background: white; }
+    #status { min-height: 20px; margin-top: 18px; font-size: 13px; color: #999; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo">C</div>
+    <h1>Chamet</h1>
+    <p>Connect with friends and enjoy live chat. Tap below to open Chamet.</p>
+    <button type="button" id="openButton">Open Chamet</button>
+    <a class="download" href="#" id="downloadLink">Download Chamet</a>
+    <div id="status" role="status">If Chamet is installed, tap “Open Chamet”.</div>
+  </main>
+
+  <script>
+    // App URL Scheme configured in the iOS project.
+    const APP_URL = "Chamet://";
+    // Replace this with your actual App Store / Onside download URL.
+    const DOWNLOAD_URL = "https://www.google.com/";
+
+    document.getElementById("downloadLink").href = DOWNLOAD_URL;
+
+    document.getElementById("openButton").addEventListener("click", function () {
+      document.getElementById("status").textContent = "Trying to open Chamet...";
+      const startedAt = Date.now();
+
+      // Must be triggered by a user action in many mobile browsers.
+      window.location.href = APP_URL;
+
+      // A timeout cannot reliably detect installation or launch success.
+      setTimeout(function () {
+        if (Date.now() - startedAt >= 1800) {
+          document.getElementById("status").textContent =
+            "If the app did not open, check that Chamet is installed or use the download link.";
+        }
+      }, 1800);
+    });
+  </script>
+</body>
+</html>
